@@ -100,6 +100,16 @@
       echo $after_widget;
     }
 
+    function loadMore()
+    {
+      $instance = get_option('widget_evwidget')[2];
+      $instance['offset'] = intval($_GET['offset']);
+      $events = $this->_getEvents($instance['api_key'], $instance['category'], $instance['total_events'], $instance['offset']);
+      echo $events;
+      echo '<div id="EventsByEvma_ShowMore"><a href="#" data-offset="'.($instance['total_events']+$instance['offset']).'">Afficher plus</a></div>';
+      exit();
+    }
+
     function _getEvents($api_key = null, $category = null, $count = 10, $offset = 0)
     {
       $html = '';
