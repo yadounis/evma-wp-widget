@@ -77,7 +77,27 @@
    
     function widget($args, $instance)
     {
-
+      extract($args, EXTR_SKIP);
+      echo $before_widget;
+      echo '<div id="EventsByEvma">';
+      $title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
+      if (!empty($title)) {
+        echo $before_title . $title . $after_title;
+      }
+      $events = $this->_getEvents($instance['api_key'], $instance['category'], $instance['total_events']);
+      if ($events) {
+        echo '<div id="EventsByEvma_EventsList">';
+        echo $events;
+        if ($instance['display_more']) {
+          echo '<div id="EventsByEvma_ShowMore"><a href="#" data-offset="'.($instance['total_events']++).'">Afficher plus</a></div>';
+        }
+        echo '</div>';
+      }
+      else {
+        echo '<div id="EventsByEvma_EmptyList"></div>';
+      }
+      echo '</div>';
+      echo $after_widget;
     }
 
     function _getEvents($api_key = null, $category = null, $count = 10, $offset = 0)
