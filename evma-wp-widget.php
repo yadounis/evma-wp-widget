@@ -14,8 +14,8 @@
 
     function EvWidget()
     {
-      $widget_ops = array('classname' => 'EvWidget', 'description' => 'Display events from Ev.ma');
-      $this->WP_Widget('EvWidget', 'Events by Ev.ma', $widget_ops);
+      $widget_ops     = array('classname' => 'EvWidget', 'description' => 'Display events from Ev.ma');
+      $this->WP_Widget('EvWidget', 'Events by Ev.ma (widget)', $widget_ops);
       //For ajax request
       add_action('wp_ajax_loadMore', array($this, 'loadMore'));
       add_action('wp_ajax_nopriv_loadMore', array($this, 'loadMore'));
