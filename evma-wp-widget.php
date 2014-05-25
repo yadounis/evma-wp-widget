@@ -101,6 +101,8 @@
       }
       echo '</div>';
       echo $after_widget;
+      //JS
+      wp_enqueue_script('evma-wp-widget', WP_PLUGIN_URL . '/evma-wp-widget/scripts.js');
     }
 
     function loadMore()
