@@ -79,6 +79,53 @@
     {
 
     }
+
+    function _getEvents($api_key = null, $category = null, $count = 10, $offset = 0)
+    {
+      $html = '';
+      $events = get_transient('evwidget_data');
+      if ($events === false) {
+        //Params
+        $params = array();
+        if ($category) {
+          $params['category'] = $category;
+        }
+        $params['count']  = $count;
+        $params['offset'] = $offset;
+        //Uri
+        $uri = "http://ev.ma/api/v1/events/search.json?" . http_build_query($params);
+        //Options
+        $options = array(
+          "http" => array(
+            "method" => "GET",
+            "header" => array(
+              "Authorization: TRUEREST access_token=" . $api_key,
+              "Content-Type: application/json",
+            )
+          )
+        );
+        $context = stream_context_create($options);
+        //Make the request
+        $response = file_get_contents($uri, false, $context);
+        //Event array
+        $events = json_decode($response, true);
+        //Cache for 12 hours
+        set_transient('evwidget_data', $events, 60*60*12);
+      }
+      if ($events) {
+        $html = '';
+        foreach ($events['events'] as $event) {
+          $html .= '<div class="EventsByEvma_SingleEvent">
+            <h4><a href="'. $event['Event']['short_link'] .'" target="_blank">'. $event['Event']['name'] .'</a></h4>
+            <div class="EventsByEvma-Meta">
+              <span class="EventsByEvma-Date">Le '. date('d F', $event['Event']['start_timestamp']) .'</span>
+              <span class="EventsByEvma-Time">à '. date('H:i', $event['Event']['start_timestamp']) .'</span>';
+          $html .= (isset($event['Venue']['City'])) ? '<span class="EventsByEvma-Location"> - '. $event['Venue']['City']['name'] .'</span>' : '';
+          $html .= '</div></div>';
+        }
+      }
+      return $html;
+    }
    
   }
 
