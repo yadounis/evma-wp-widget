@@ -64,6 +64,14 @@
     function update($new_instance, $old_instance)
     {
       $instance = $old_instance;
+      $instance = array(
+        'title'        => $new_instance['title'],
+        'api_key'      => $new_instance['api_key'],
+        'category'     => intval($new_instance['category']),
+        'total_events' => intval($new_instance['total_events']),
+        'display_more' => intval($new_instance['display_more']),
+      );
+      delete_transient('evwidget_data');
       return $instance;
     }
    
