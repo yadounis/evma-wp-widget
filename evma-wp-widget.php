@@ -118,7 +118,7 @@
     function _getEvents($api_key = null, $category = null, $count = 10, $offset = 0)
     {
       $html = '';
-      $events = get_transient('evwidget_data');
+      $events = ($offset) ? false : get_transient('evwidget_data');
       if ($events === false) {
         //Params
         $params = array();
